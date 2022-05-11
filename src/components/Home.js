@@ -51,24 +51,22 @@ class Home extends React.Component {
       )
     } else {
     return (
-      <div className="home">
-        <div className="container-fluid mx-5 py-5">
-          <div className="row align-items-top my-5">
-            <div className="col-lg-5">
+      <div className="overflow-hidden">
+        <div className="container-fluid mx-5 pt-5 pb-5">
+          <div className="row align-items-top my-5 px-2">
+            <div className="col-lg-5 pr-4">
               <h1 className="font-weight-light">Project Description</h1>
               <p>
-                This project aims to connect several communities and
-                municipalities throughout Central America (specifically Honduras
-                and Nicaragua) with safe drinking water through the chlorination
-                on site. The data collected from the sensors allow for
-                researchers and the general public to know the quality of the
-                water being served and keep up with site maintenance. Click on
-                the sites to display more info.
+              This project intends to provide safe drinking water to various villages and municipalities throughout Central America (particularly Honduras and Nicaragua) using on-site chlorination. Researchers and the general public can use the data received from the sensors to determine the quality of the water delivered and to keep track of site maintenance. More information is available by clicking on the sites.
               </p>
-              <iframe width="600" height="315" src="https://www.youtube.com/embed/h2MJir9aTvg">
+              <div style={{margin: "auto", display: "flex", height: "50vh"}}>
+              <iframe width="100%" src="https://www.youtube.com/embed/h2MJir9aTvg">
               </iframe>
+              </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-6 pl-4">
+              <br></br>
+              <div style={{margin: "0 auto"}}>
               <Map
                 lat="13.534358"
                 lon="-87.538763"
@@ -76,9 +74,10 @@ class Home extends React.Component {
                 page="home"
                 data={this.state.data}
                 scroll={true}
-                height="60vh"
+                height="65vh"
                 width="100vh"
               ></Map>
+              </div>
             </div>
           </div>
         </div>

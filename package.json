@@ -10,7 +10,10 @@
     "axios": "^0.26.1",
     "better-react-mathjax": "^2.0.1",
     "chart.js": "^3.7.1",
+    "chartjs-adapter-date-fns": "^2.0.0",
     "chartjs-adapter-moment": "^1.0.0",
+    "d3": "^7.4.4",
+    "date-fns": "^2.28.0",
     "leaflet": "^1.8.0",
     "moment": "^2.29.3",
     "react": "^18.0.0",
@@ -50,5 +53,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://s-l112.engr.uiowa.edu/inf/inf_student05/app/"
+  "homepage": "https://s-l112.engr.uiowa.edu/inf/inf_student05/app"
 }

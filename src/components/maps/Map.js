@@ -16,7 +16,7 @@ const createIcon = L.icon({
 const DifMarks = (props) => {
   const navigate = useNavigate()
   const handleLink = useCallback(()=>{
-    navigate('/stations', {replace:true}, [navigate])
+    navigate(`${process.env.PUBLIC_URL}/stations`, {replace:true}, [navigate])
   })
     const map = useMap()
   if (props.page === "home") {

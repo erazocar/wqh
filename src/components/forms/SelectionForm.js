@@ -4,7 +4,9 @@ import dataCaller from "../apicalls/caller.js";
 import axios from "axios";
 import LinesCharts from "../charts/LineCharts";
 import SideBarSingle from "./sideBarSingleStation";
-import {FreeChlor} from "../../functions/freechlorine.js";
+import { FreeChlor } from "../../functions/Functions.js";
+import StatsTable from "./StatsTable";
+import DownloadModal from "./DownloadMod";
 
 class SelectionForm extends React.Component {
   constructor(props) {
@@ -23,8 +25,11 @@ class SelectionForm extends React.Component {
       minDate: null,
       maxDate: null,
       scount: null,
+      rangeCount: null,
       freeChl: null,
       seen: false,
+      systembatt: null,
+      level: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -70,21 +75,13 @@ class SelectionForm extends React.Component {
       var orp = response.map(({ orp }) => JSON.parse(orp));
       var ph = response.map(({ ph }) => JSON.parse(ph));
       var temp = response.map(({ temperature }) => JSON.parse(temperature));
+      var sysbatt = response.map(({ systembatt }) => systembatt !== null ? JSON.parse(systembatt) : 0);
+      var level = response.map(({ level }) => JSON.parse(level));
       var chl = FreeChlor(orp, ph);
 
       var unix = response.map(({ unixtime }) => {
         var dt = new Date(JSON.parse(unixtime));
-        return (
-          dt.getFullYear() +
-          "-" +
-          (dt.getMonth() + 1) +
-          "-" +
-          dt.getDay() +
-          " " +
-          dt.getHours() +
-          ":" +
-          dt.getMinutes()
-        );
+        return dt;
       });
       this.setState({
         orp: orp,
@@ -92,6 +89,9 @@ class SelectionForm extends React.Component {
         temp: temp,
         dates: unix,
         freeChl: chl,
+        rangeCount: orp.length,
+        systembatt: sysbatt,
+        level: level
       });
     });
     axios({
@@ -143,8 +143,9 @@ class SelectionForm extends React.Component {
   render() {
     return (
       <div className="container-flex mx-5 py-5">
+        <br></br>
         <div className="row align-items-top my-5">
-          <div className="col-3 ml-5">
+          <div className="col-2 ml-5">
             <SideBarSingle
               id={this.state.sensorId}
               location={this.state.location}
@@ -153,13 +154,20 @@ class SelectionForm extends React.Component {
               mindate={this.state.minDate}
               maxdate={this.state.maxDate}
               count={this.state.scount}
+              rangeCount={this.state.rangeCount}
               startDate={this.state.startDate}
               endDate={this.state.endDate}
-              data={[this.state.dates, this.state.ph, this.state.orp, this.state.temp, this.state.freeChl]}
-              names={['Date', 'pH', 'ORP', 'Temperature', 'logFCR']}
+              data={[
+                this.state.dates,
+                this.state.ph,
+                this.state.orp,
+                this.state.temp,
+                this.state.freeChl,
+              ]}
+              names={["Date", "pH", "ORP", "Temperature", "logFCR"]}
             />
           </div>
-          <div className="col-8">
+          <div className="col-6 ml-3">
             <form
               className="form-inline"
               onSubmit={this.handleSubmit.bind(this)}
@@ -167,7 +175,7 @@ class SelectionForm extends React.Component {
               action="#"
             >
               <div className="form-group ml-5">
-                <div className="input-group mb-3 ml-6">
+                <div className="input-group mb-3 ml-5">
                   <div className="input-group-prepend">
                     <label
                       className="input-group-text"
@@ -207,7 +215,7 @@ class SelectionForm extends React.Component {
                 </button>
               </div>
             </form>
-            <div className="row align-items-top my-4">
+            <div className="row align-items-top mb-2 px-3 flex-row mw-60">
               <LinesCharts
                 dates={this.state.dates}
                 names={["temperature", "ph"]}
@@ -216,13 +224,49 @@ class SelectionForm extends React.Component {
                 data={[this.state.temp, this.state.ph]}
               />
             </div>
-            <div className="row align-items-top my-4">
+            <br></br>
+            <br></br>
+            <div className="row align-items-top mt-2 px-3 flex-row mw-60">
               <LinesCharts
                 dates={this.state.dates}
                 names={["orp", "log(FC)"]}
                 xdisplay={true}
                 title={"ORP vs Free Chlorine"}
                 data={[this.state.orp, this.state.freeChl]}
+              />
+            </div>
+          </div>
+          <div
+            className="col-2 flex-column pl-5"
+            style={{ textAlign: "center"}}
+          >
+            <StatsTable
+              ph={this.state.ph}
+              temp={this.state.temp}
+              orp={this.state.orp}
+              freeChl={this.state.freeChl}
+              systembatt = {this.state.systembatt}
+              level = {this.state.level}
+            />
+            <div className="float-right">
+              <DownloadModal
+                id={this.state.sensorId}
+                location={this.state.location}
+                lon={this.state.lon}
+                lat={this.state.lat}
+                mindate={this.state.minDate}
+                maxdate={this.state.maxDate}
+                count={this.state.scount}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                data={[
+                  this.state.dates,
+                  this.state.ph,
+                  this.state.orp,
+                  this.state.temp,
+                  this.state.freeChl,
+                ]}
+                names={["Date", "pH", "ORP", "Temperature", "logFCR"]}
               />
             </div>
           </div>

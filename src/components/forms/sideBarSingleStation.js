@@ -1,23 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Map from "../maps/Map";
 import Modal from "react-modal";
-import {ExportCSV, ExportJSON} from "../../functions/freechlorine.js";
-
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
 
 const SideBarStyle=styled.div`{
 width: 300px;
-height: 70vh;
 overflow: hidden;
 padding-left: 5px;
 
@@ -37,7 +24,7 @@ border-radius: .25em;
 
 .spinner {
     // The height here is just for demo purposes
-    height: 60vh;  
+    height: 70vh;  
     position: relative;
     
     &::before {
@@ -59,37 +46,7 @@ border-radius: .25em;
 Modal.setAppElement('#root');
 
 const SideBarSingle  = (props) => {
-    const [seen, setSeen] = useState(false)
-    const [dataType, setDataType] = useState('')
-
     const { location } = props 
-
-    const openModal = () => {
-        setSeen(true)
-    }
-
-    const closeModal = () => {
-        setSeen(false)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        switch (dataType){
-            case 'CSV':
-                ExportCSV(props);
-                break;
-            case 'JSON':
-                ExportJSON(props);
-                break;
-            default:
-                break;
-        }
-    }
-
-    const onDataTypeChange = (e) =>{
-        e.preventDefault()
-        setDataType(e.target.value)
-    }
 
     if (!location) {return (
         <SideBarStyle>
@@ -123,16 +80,16 @@ const SideBarSingle  = (props) => {
             <p className="text-black">
               <strong>Available Data: </strong> {props.count}
             </p>
+            <p className="text-black">
+              <strong>Data Selected Range Count: </strong> {props.rangeCount}
+            </p>
           </div>
         </div>
+        <br></br>
         <div
-          className="row align-items-top"
+          className="row align-items-center"
           style={{
-            maxWidth: "300px",
-            maxHeight: "300px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
+            margin: "auto"
           }}
         >
           <Map
@@ -145,50 +102,6 @@ const SideBarSingle  = (props) => {
             height="260px"
             width="300px"
           ></Map>
-        </div>
-        <div className="row align-items-top">
-          <div>
-              <div style={{alignSelf: "auto",
-              padding: "10px 100px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"}}>
-            <button className="btn btn-outline-dark mb-3" onClick={openModal}>
-              Download
-            </button>
-            </div>
-            <Modal
-              isOpen={seen}
-              onRequestClose={closeModal}
-              style={customStyles}
-            >
-              <form
-                onSubmit={handleSubmit}
-                action="#"
-              >
-                <div className="form-group">
-                <select
-                    className="custom-select mr-sm-2"
-                    id="inputGroupSelect01"
-                    onChange={onDataTypeChange}
-                >
-                    <option>Choose...</option>
-                    <option defaultValue="JSON">JSON</option>
-                    <option defaultValue="CSV">CSV</option>
-                </select>
-                </div>
-                <button type="submit" className="btn btn-outline-dark mb-3">
-                  Download
-                </button>
-              </form>
-              <button
-                className="btn btn-outline-secondary mb-3"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </Modal>
-          </div>
         </div>
       </SideBarStyle>
     );

@@ -39,6 +39,19 @@ code {
   flex: auto;
 }
 
+  .carousel-inner img {
+    width: 60%;
+    max-height: 30%;
+    border-radius: ".30em";
+    margin: 0 auto;
+  }
+
+  .carousel {
+    width:640px;
+    height:400px;
+    margin: auto
+  }
+
 .navbar .footer{
   position:fixed;
   overflow:unset;

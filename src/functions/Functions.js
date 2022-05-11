@@ -1,3 +1,5 @@
+
+
 const FreeChlor = (orp, ph) => {
     var output = []
     for (var i = 0; i < orp.length; i++){
@@ -33,8 +35,12 @@ const ExportJSON = (props) => {
 }
 
 const ExportCSV = (props) => {
-    var headers = props.names.map(i => [i])
+    var headers = props.names.map(i => i)
     var dataCSV = arrchange(props.data)
+    dataCSV[0] = dataCSV[0].map((date) => {
+        var stg = new Date(date)
+        return stg.toLocaleDateString('en-GB')
+    })
     DownloadFiles({
         data: [...headers, ...dataCSV].join('\n'),
         fileName: 'export.csv',
