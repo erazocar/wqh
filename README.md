@@ -1,3 +1,3 @@
 # Water Quality Central America
 ## Code Description
-Please find attached the code serving the water quality site deployed using React.
+Water quality monitoring application developed using React. Found in: https://s-l112.engr.uiowa.edu/inf/inf_student05/app/
